@@ -3,7 +3,7 @@ package db
 import (
 	"strconv"
 
-	"github.com/ansible-semaphore/semaphore/util"
+	"github.com/CodyGuo/semaphore/util"
 )
 
 // AccessKey represents a key used to access a machine with ansible from semaphore

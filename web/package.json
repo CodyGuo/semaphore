@@ -29,12 +29,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ansible-semaphore/semaphore.git"
+    "url": "git+https://github.com/CodyGuo/semaphore.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ansible-semaphore/semaphore/issues"
+    "url": "https://github.com/CodyGuo/semaphore/issues"
   },
-  "homepage": "https://github.com/ansible-semaphore/semaphore#readme"
+  "homepage": "https://github.com/CodyGuo/semaphore#readme"
 }

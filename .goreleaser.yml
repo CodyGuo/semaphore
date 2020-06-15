@@ -47,7 +47,7 @@ nfpm:
   name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
 
   vendor: Castaway Consulting LLC
-  homepage: https://github.com/ansible-semaphore/semaphore
+  homepage: https://github.com/CodyGuo/semaphore
   maintainer: Castaway Consulting LLC <support@castawaylabs.com>
   description: Open Source alternative to Ansible Tower
   license: MIT

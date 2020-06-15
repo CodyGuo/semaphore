@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ansible-semaphore/semaphore/db"
-	"github.com/ansible-semaphore/semaphore/util"
+	"github.com/CodyGuo/semaphore/db"
+	"github.com/CodyGuo/semaphore/util"
 
 	"github.com/gorilla/context"
 	"github.com/gorilla/mux"

@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/ansible-semaphore/semaphore/db"
+	"github.com/CodyGuo/semaphore/db"
 	trans "github.com/snikch/goodman/transaction"
 	"strconv"
 	"strings"

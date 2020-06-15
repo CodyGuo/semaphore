@@ -3,11 +3,11 @@ package projects
 import (
 	"net/http"
 
-	"github.com/ansible-semaphore/semaphore/db"
+	"github.com/CodyGuo/semaphore/db"
 
 	"time"
 
-	"github.com/ansible-semaphore/semaphore/util"
+	"github.com/CodyGuo/semaphore/util"
 	"github.com/gorilla/context"
 	"github.com/masterminds/squirrel"
 )

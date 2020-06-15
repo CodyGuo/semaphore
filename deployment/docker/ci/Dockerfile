@@ -5,7 +5,7 @@ LABEL maintainer="Tom Whiston <tom.whiston@gmail.com>"
 
 ENV SEMAPHORE_VERSION="development" SEMAPHORE_ARCH="linux_amd64" \
     SEMAPHORE_CONFIG_PATH="${SEMAPHORE_CONFIG_PATH:-/etc/semaphore}" \
-    APP_ROOT="/go/src/github.com/ansible-semaphore/semaphore/"
+    APP_ROOT="/go/src/github.com/CodyGuo/semaphore/"
 
 # hadolint ignore=DL3013
 RUN apk add --no-cache git mysql-client python py-pip py-openssl openssl ca-certificates curl curl-dev openssh-client tini nodejs nodejs-npm bash rsync && \
@@ -15,7 +15,7 @@ RUN apk add --no-cache git mysql-client python py-pip py-openssl openssl ca-cert
     apk del build-dependencies && \
     rm -rf /var/cache/apk/*    && \
     adduser -D -u 1002 -g 0 semaphore && \
-    mkdir -p /go/src/github.com/ansible-semaphore/semaphore && \
+    mkdir -p /go/src/github.com/CodyGuo/semaphore && \
     mkdir -p /tmp/semaphore && \
     mkdir -p /etc/semaphore && \
     chown -R semaphore:0 /go && \

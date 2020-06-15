@@ -5,11 +5,11 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/ansible-semaphore/semaphore/db"
+	"github.com/CodyGuo/semaphore/db"
 	"github.com/gorilla/context"
 	"github.com/gorilla/websocket"
-	"github.com/ansible-semaphore/semaphore/util"
-	log "github.com/Sirupsen/logrus"
+	"github.com/CodyGuo/semaphore/util"
+	log "github.com/sirupsen/logrus"
 )
 
 var upgrader = websocket.Upgrader{

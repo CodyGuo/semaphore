@@ -11,14 +11,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ansible-semaphore/semaphore/api"
-	"github.com/ansible-semaphore/semaphore/api/sockets"
-	"github.com/ansible-semaphore/semaphore/api/tasks"
-	"github.com/ansible-semaphore/semaphore/db"
-	"github.com/ansible-semaphore/semaphore/util"
+	"github.com/CodyGuo/semaphore/api"
+	"github.com/CodyGuo/semaphore/api/sockets"
+	"github.com/CodyGuo/semaphore/api/tasks"
+	"github.com/CodyGuo/semaphore/db"
+	"github.com/CodyGuo/semaphore/util"
 	"github.com/gorilla/handlers"
 	"golang.org/x/crypto/bcrypt"
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
 
 func main() {

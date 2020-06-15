@@ -14,9 +14,9 @@ import (
 	"strings"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
-	"github.com/ansible-semaphore/semaphore/db"
-	"github.com/ansible-semaphore/semaphore/util"
+	log "github.com/sirupsen/logrus"
+	"github.com/CodyGuo/semaphore/db"
+	"github.com/CodyGuo/semaphore/util"
 )
 
 const (

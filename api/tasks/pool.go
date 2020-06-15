@@ -4,8 +4,8 @@ import (
 	"strconv"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
-	"github.com/ansible-semaphore/semaphore/util"
+	log "github.com/sirupsen/logrus"
+	"github.com/CodyGuo/semaphore/util"
 )
 
 type taskPool struct {

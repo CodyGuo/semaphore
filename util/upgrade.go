@@ -67,7 +67,7 @@ func DoUpgrade(version string) error {
 		return err
 	}
 
-	fmt.Println("visit https://github.com/ansible-semaphore/semaphore/releases for the changelog")
+	fmt.Println("visit https://github.com/CodyGuo/semaphore/releases for the changelog")
 	go func() {
 		time.Sleep(time.Second * 3)
 		os.Exit(0)
@@ -104,7 +104,7 @@ func findAsset(release *github.RepositoryRelease) *github.ReleaseAsset {
 func CheckUpdate(version string) error {
 	// fetch releases
 	gh := github.NewClient(nil)
-	releases, _, err := gh.Repositories.ListReleases(context.TODO(), "ansible-semaphore", "semaphore", nil)
+	releases, _, err := gh.Repositories.ListReleases(context.TODO(), "CodyGuo", "semaphore", nil)
 	if err != nil {
 		return err
 	}

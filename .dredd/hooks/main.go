@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/ansible-semaphore/semaphore/db"
+	"github.com/CodyGuo/semaphore/db"
 	"github.com/snikch/goodman/hooks"
 	trans "github.com/snikch/goodman/transaction"
 	"strconv"

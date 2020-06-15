@@ -5,10 +5,10 @@ import (
 	"strconv"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
-	"github.com/ansible-semaphore/semaphore/db"
+	log "github.com/sirupsen/logrus"
+	"github.com/CodyGuo/semaphore/db"
 
-	"github.com/ansible-semaphore/semaphore/util"
+	"github.com/CodyGuo/semaphore/util"
 	"github.com/gorilla/context"
 	"github.com/masterminds/squirrel"
 )

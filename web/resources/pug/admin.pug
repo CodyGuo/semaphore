@@ -4,16 +4,16 @@
 	.row
 		.col-sm-4
 			ul.list-group
-				li.list-group-item: a(href="https://github.com/ansible-semaphore/semaphore" target="_blank") GitHub
-				li.list-group-item: a(href="https://github.com/ansible-semaphore/semaphore/issues/new" target="_blank") Help (GH issues)
-				li.list-group-item: a(href="https://github.com/ansible-semaphore/semaphore/wiki" target="_blank") Wiki
+				li.list-group-item: a(href="https://github.com/CodyGuo/semaphore" target="_blank") GitHub
+				li.list-group-item: a(href="https://github.com/CodyGuo/semaphore/issues/new" target="_blank") Help (GH issues)
+				li.list-group-item: a(href="https://github.com/CodyGuo/semaphore/wiki" target="_blank") Wiki
 				li.list-group-item: a(href="" ng-click="checkUpdate()") Check for Update
-				li.list-group-item: a(href="https://ansible-semaphore.github.io/semaphore/" target="_blank") API Documentation
+				li.list-group-item: a(href="https://CodyGuo.github.io/semaphore/" target="_blank") API Documentation
 		.col-sm-4
 			div(ng-if="upgrade.updateBody")
 				button.btn.btn-primary.btn-block(ng-click="doUpgrade()" ng-disabled="upgrade.config.cmdPath.length == 0") latest stable {{ upgrade.update.tag_name }}
 				p.text-center(ng-if="upgrade.config.cmdPath.length == 0")
-					a(href="https://github.com/ansible-semaphore/semaphore/wiki/Troubleshooting#upgrades-failing" target="_blank") Upgrading isn't possible!
+					a(href="https://github.com/CodyGuo/semaphore/wiki/Troubleshooting#upgrades-failing" target="_blank") Upgrading isn't possible!
 					br
 					| You should fix this error or upgrade manually.
 				div(ng-bind-html="upgrade.updateBody")
@@ -30,5 +30,5 @@
 						| &nbsp;not found in&nbsp;
 						code $PATH
 						| . Upgrading&nbsp;
-						a(href="https://github.com/ansible-semaphore/semaphore/wiki/Installation#install-instructions" target="_blank") will not work
+						a(href="https://github.com/CodyGuo/semaphore/wiki/Installation#install-instructions" target="_blank") will not work
 					code(ng-if="upgrade.config.cmdPath.length > 0") {{ upgrade.config.cmdPath }}

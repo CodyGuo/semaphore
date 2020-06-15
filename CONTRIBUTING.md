@@ -23,13 +23,13 @@ export GOPATH=`pwd`
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 
-mkdir -p $GOPATH/src/github.com/ansible-semaphore && cd $GOPATH/src/github.com/ansible-semaphore
+mkdir -p $GOPATH/src/github.com/CodyGuo && cd $GOPATH/src/github.com/CodyGuo
 ```
 
 2) Clone semaphore (with submodules)
 
 ```
-git clone --recursive git@github.com:ansible-semaphore/semaphore.git && cd semaphore
+git clone --recursive git@github.com:CodyGuo/semaphore.git && cd semaphore
 ```
 
 3) Install dev dependencies

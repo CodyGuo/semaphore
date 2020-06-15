@@ -3,7 +3,7 @@ package util
 import (
 	"bytes"
 	"net/smtp"
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"io"
 )
 

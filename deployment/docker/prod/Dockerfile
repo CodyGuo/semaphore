@@ -1,4 +1,4 @@
-# ansible-semaphore production image
+# CodyGuo production image
 #
 # Uses frolvlad alpine so we have access to glibc which is needed for golang
 # and when deploying in openshift
@@ -13,8 +13,8 @@ RUN apk add --no-cache git ansible mysql-client curl openssh-client tini && \
     chown -R semaphore:0 /tmp/semaphore && \
     chown -R semaphore:0 /etc/semaphore
 
-COPY ./ /go/src/github.com/ansible-semaphore/semaphore
-WORKDIR /go/src/github.com/ansible-semaphore/semaphore
+COPY ./ /go/src/github.com/CodyGuo/semaphore
+WORKDIR /go/src/github.com/CodyGuo/semaphore
 
 RUN apk add --no-cache -U libc-dev go nodejs && \
   ./deployment/docker/prod/bin/install && \

@@ -1,4 +1,4 @@
-module semaphore
+module github.com/CodyGuo/semaphore
 
 go 1.14
 

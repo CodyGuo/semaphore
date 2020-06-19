@@ -1,5 +1,5 @@
 # Golang testing image with some tools already installed
-FROM tomwhiston/micro-golang:test-base
+FROM golang:1.13-alpine
 
 LABEL maintainer="Tom Whiston <tom.whiston@gmail.com>"
 
@@ -23,7 +23,7 @@ RUN apk add --no-cache git mysql-client python py-pip py-openssl openssl ca-cert
     chown -R semaphore:0 /etc/semaphore && \
     ssh-keygen -t rsa -q -f "/root/.ssh/id_rsa" -N ""       && \
     ssh-keyscan -H github.com > /root/.ssh/known_hosts      && \
-    go get -u -v github.com/go-task/task/cmd/task
+    cd $(go env GOPATH) && curl -sL https://taskfile.dev/install.sh | sh
 
 # Copy in app source
 WORKDIR ${APP_ROOT}

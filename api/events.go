@@ -28,9 +28,9 @@ func getEvents(w http.ResponseWriter, r *http.Request, limit uint64) {
 		// limit query to project
 		project := projectObj.(db.Project)
 		q = q.Where("event.project_id=?", project.ID)
-	} else {
+	} else if !user.Admin {
 		q = q.LeftJoin("project__user as pu on pu.project_id=p.id").
-			Where("p.id IS NULL or pu.user_id=?", user.ID)
+			Where("pu.user_id=?", user.ID)
 	}
 
 	var events []db.Event

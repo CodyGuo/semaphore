@@ -3,6 +3,7 @@ package projects
 import (
 	"database/sql"
 	"net/http"
+	"strconv"
 
 	"github.com/CodyGuo/semaphore/db"
 
@@ -27,6 +28,14 @@ func ProjectMiddleware(next http.Handler) http.Handler {
 			Where("p.id=?", projectID).
 			Where("pu.user_id=?", user.ID).
 			ToSql()
+
+		if user.Admin {
+			query, args, err = squirrel.Select("p.*").
+				From("project as p").
+				Where("p.id=?", projectID).
+				GroupBy("p.id").
+				ToSql()
+		}
 		util.LogWarning(err)
 
 		var project db.Project
@@ -60,7 +69,7 @@ func MustBeAdmin(next http.Handler) http.Handler {
 			panic(err)
 		}
 
-		if userC == 0 {
+		if userC == 0 && !user.Admin {
 			w.WriteHeader(http.StatusForbidden)
 			return
 		}
@@ -70,6 +79,7 @@ func MustBeAdmin(next http.Handler) http.Handler {
 
 // UpdateProject saves updated project details to the database
 func UpdateProject(w http.ResponseWriter, r *http.Request) {
+	user := context.Get(r, "user").(*db.User)
 	project := context.Get(r, "project").(db.Project)
 	var body struct {
 		Name      string `json:"name"`
@@ -85,11 +95,23 @@ func UpdateProject(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
+	desc := "Project Updated ID " + strconv.Itoa(project.ID) + " (" + project.Name + ") to " + body.Name + " By " + user.Name
+	oType := "Project"
+	if err := (db.Event{
+		ProjectID:   &project.ID,
+		Description: &desc,
+		ObjectType:  &oType,
+		ObjectID:    &project.ID,
+	}.Insert()); err != nil {
+		panic(err)
+	}
+
 	w.WriteHeader(http.StatusNoContent)
 }
 
 // DeleteProject removes a project from the database
 func DeleteProject(w http.ResponseWriter, r *http.Request) {
+	user := context.Get(r, "user").(*db.User)
 	project := context.Get(r, "project").(db.Project)
 
 	tx, err := db.Mysql.Begin()
@@ -119,6 +141,17 @@ func DeleteProject(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := tx.Commit(); err != nil {
+		panic(err)
+	}
+
+	desc := "Project Delete ID " + strconv.Itoa(project.ID) + " (" + project.Name + ") By " + user.Name
+	oType := "Project"
+	if err := (db.Event{
+		ProjectID:   &project.ID,
+		Description: &desc,
+		ObjectType:  &oType,
+		ObjectID:    &project.ID,
+	}.Insert()); err != nil {
 		panic(err)
 	}
 

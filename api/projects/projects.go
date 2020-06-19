@@ -2,6 +2,7 @@ package projects
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/CodyGuo/semaphore/db"
 
@@ -20,9 +21,17 @@ func GetProjects(w http.ResponseWriter, r *http.Request) {
 		From("project as p").
 		Join("project__user as pu on pu.project_id=p.id").
 		Where("pu.user_id=?", user.ID).
+		GroupBy("p.id").
 		OrderBy("p.name").
 		ToSql()
 
+	if user.Admin {
+		query, args, err = squirrel.Select("p.*").
+			From("project as p").
+			GroupBy("p.id").
+			OrderBy("p.name").
+			ToSql()
+	}
 	util.LogWarning(err)
 	var projects []db.Project
 	if _, err := db.Mysql.Select(&projects, query, args...); err != nil {
@@ -50,7 +59,7 @@ func AddProject(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	desc := "Project Created"
+	desc := "Project Created ID " + strconv.Itoa(body.ID) + " (" + body.Name + ") By " + user.Name
 	oType := "Project"
 	if err := (db.Event{
 		ProjectID:   &body.ID,

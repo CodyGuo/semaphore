@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/CodyGuo/semaphore/db"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/CodyGuo/semaphore/util"
 	"github.com/gorilla/context"
@@ -43,6 +43,17 @@ func addUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	util.WriteJSON(w, http.StatusCreated, user)
+}
+func mustBeAdminMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		editor := context.Get(r, "user").(*db.User)
+		if !editor.Admin {
+			log.Warn(editor.Username + " is not permitted to add project")
+			w.WriteHeader(http.StatusForbidden)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
 }
 
 func getUserMiddleware(next http.Handler) http.Handler {

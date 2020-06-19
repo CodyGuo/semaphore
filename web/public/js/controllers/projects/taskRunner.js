@@ -1,6 +1,6 @@
 define(function () {
 	app.registerController('CreateTaskCtrl', ['$scope', '$http', 'Template', 'Project', 'SweetAlert', function ($scope, $http, Template, Project, SweetAlert) {
-		console.log(Template);
+        // console.log(Template);
 		$scope.task = {};
 
 		$scope.run = function (task, dryRun) {
@@ -51,6 +51,10 @@ define(function () {
 		}));
 
 		onDestroy.push($scope.$on('task.update', function (evt, data) {
+            // Bug: https://github.com/ansible-semaphore/semaphore/issues/432
+			if ($scope.task.id !== data.task_id) {
+				return;
+			}
 			$scope.task.status = data.status;
 			$scope.task.start = data.start;
 			$scope.task.end = data.end;

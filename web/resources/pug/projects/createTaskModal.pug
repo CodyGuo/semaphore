@@ -6,9 +6,17 @@
 			.col-sm-6.col-sm-offset-4
 				p.help-block <i>Optional</i> parameters
 		.form-group
-			label.control-label.col-sm-4 Playbook Override
+			label.control-label.col-sm-4 Alias
 			.col-sm-6
-				input.form-control(type="text" placeholder="Enter playbook name to override template" ng-model="task.playbook")
+				input.form-control(type="text" readonly="readonly" ng-model="tpl.alias")
+		.form-group
+			label.control-label.col-sm-4 Template ID
+			.col-sm-6
+				input.form-control(type="text" readonly="readonly" ng-model="tpl.id")
+		.form-group
+			label.control-label.col-sm-4 Playbook
+			.col-sm-6
+				input.form-control(type="text" readonly="readonly" ng-model="tpl.playbook")
 		.form-group
 			label.control-label.col-sm-4 Environment Override (*MUST* be valid JSON)
 			.col-sm-6

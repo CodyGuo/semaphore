@@ -6,14 +6,16 @@
 		dd {{ task.status }}
 		dt User
 		dd {{ task.user_name }}
+		dt Dry Run
+		dd {{ task.dry_run }}
 		dt Started
-		dd {{ task.startFormatted }}
+		dd {{ task.start | date:'yyyy/MM/dd HH:mm:ss' }}
 		dt Ended
-		dd {{ task.endFormatted }}
+		dd {{ task.end | date:'yyyy/MM/dd HH:mm:ss' }}
 		dt Created
-		dd {{ task.createdFormatted }}
+		dd {{ task.created | date:'yyyy/MM/dd HH:mm:ss' }}
 		dt Permalink
-		dd 
+		dd
 			a(href="{{ task.URL }}") Output
 		dt Raw output
 		dd: input(type="checkbox" ng-model="raw" title="show logs unbesmirched")
@@ -22,5 +24,5 @@
 
 .modal-footer
 	button.btn.btn-default.pull-left(ng-click="$dismiss()") Dismiss
-	button.btn.btn-danger(ng-click="remove()") delete
+	button.btn.btn-danger(ng-disabled="task.status == 'waiting' || task.status == 'running'" ng-if="project_user.admin || user.admin" ng-click="remove()") delete
 	//- button.btn.btn-success(ng-click="restart(task)") Re-Run

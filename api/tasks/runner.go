@@ -14,9 +14,9 @@ import (
 	"strings"
 	"time"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/CodyGuo/semaphore/db"
 	"github.com/CodyGuo/semaphore/util"
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -174,7 +174,11 @@ func (t *task) run() {
 	}
 
 	t.log("Started: " + strconv.Itoa(t.task.ID))
-	t.log("Run task with template: " + t.template.Alias + "\n")
+	if t.task.DryRun {
+		t.log("Dry Run task with template: " + t.template.Alias + "\n")
+	} else {
+		t.log("Run task with template: " + t.template.Alias + "\n")
+	}
 
 	if err := t.runPlaybook(); err != nil {
 		t.log("Running playbook failed: " + err.Error())

@@ -21,6 +21,4 @@ done
 echo "---> Run Dredd"
 # We do this because otherwise it can fail out
 sleep 5
-ls -l
-ls -l /root/
-/home/developer/node_modules/.bin/dredd $@
+/node_modules/.bin/dredd $@

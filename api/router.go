@@ -89,13 +89,16 @@ func Route() *mux.Router {
 	user.HandleFunc("/tokens", createAPIToken).Methods("POST")
 	user.HandleFunc("/tokens/{token_id}", expireAPIToken).Methods("DELETE")
 
-	users := api.PathPrefix("/users").Subrouter()
-	users.Use(getUserMiddleware)
-	users.HandleFunc("/users", addUser).Methods("POST")
-	users.HandleFunc("/{user_id}", getUser).Methods("GET", "HEAD")
-	users.HandleFunc("/{user_id}", updateUser).Methods("PUT")
-	users.HandleFunc("/{user_id}/password", updateUserPassword).Methods("POST")
-	users.HandleFunc("/{user_id}", deleteUser).Methods("DELETE")
+	apiUsers := api.PathPrefix("/users").Subrouter()
+	apiUsers.Use(mustBeAdminMiddleware)
+	apiUsers.HandleFunc("", addUser).Methods("POST")
+
+	apiUsersManagement := apiUsers.PathPrefix("/{user_id}").Subrouter()
+	apiUsersManagement.Use(getUserMiddleware)
+	apiUsersManagement.HandleFunc("", getUser).Methods("GET", "HEAD")
+	apiUsersManagement.HandleFunc("", updateUser).Methods("PUT")
+	apiUsersManagement.HandleFunc("/password", updateUserPassword).Methods("POST")
+	apiUsersManagement.HandleFunc("", deleteUser).Methods("DELETE")
 
 	apiProjects := api.PathPrefix("/projects").Subrouter()
 	apiProjects.Use(mustBeAdminMiddleware)

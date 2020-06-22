@@ -81,7 +81,11 @@ func handleRollbackError(err error) {
 func (version *Version) TryRollback() {
 	fmt.Printf("Rolling back %s (time: %v)...\n", version.HumanoidVersion(), time.Now())
 
-	data := dbAssets.Find(version.GetErrPath())
+	data, err := dbAssets.Find(version.GetErrPath())
+	if err != nil {
+		log.Error("TryRollback find version err path, error: ", err)
+		return
+	}
 	if len(data) == 0 {
 		fmt.Println("Rollback SQL does not exist.")
 		fmt.Println()

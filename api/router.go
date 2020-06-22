@@ -34,14 +34,20 @@ func plainTextMiddleware(next http.Handler) http.Handler {
 }
 
 func pongHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("pong"))
+	_, err := w.Write([]byte("pong"))
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+	}
 }
 
 func notFoundHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", r.Header.Get("Origin"))
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.WriteHeader(http.StatusNotFound)
-	w.Write([]byte("404 not found"))
+	_, err := w.Write([]byte("404 not found"))
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+	}
 	fmt.Println(r.Method, ":", r.URL.String(), "--> 404 Not Found")
 }
 
@@ -209,7 +215,7 @@ func servePublic(w http.ResponseWriter, r *http.Request) {
 	split := strings.Split(path, ".")
 	suffix := split[len(split)-1]
 
-	res, err := publicAssets.MustBytes(path)
+	res, err := publicAssets.Find(path)
 	if err != nil {
 		notFoundHandler(w, r)
 		return

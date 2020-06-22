@@ -16,10 +16,10 @@ func (version *Version) CheckExists() (bool, error) {
 	exists, err := Mysql.SelectInt("select count(1) as ex from migrations where version=?", version.VersionString())
 
 	if err != nil {
-		switch err.(type) {
+		switch e := err.(type) {
 		case *mysql.MySQLError:
 			// 1146 is mysql table does not exist
-			if err.(*mysql.MySQLError).Number != 1146 {
+			if e.Number != 1146 {
 				return false, err
 			}
 
@@ -71,7 +71,7 @@ func (version *Version) Run() error {
 	return tx.Commit()
 }
 
-func handleRollbackError(err error){
+func handleRollbackError(err error) {
 	if err != nil {
 		log.Warn(err.Error())
 	}
@@ -81,7 +81,7 @@ func handleRollbackError(err error){
 func (version *Version) TryRollback() {
 	fmt.Printf("Rolling back %s (time: %v)...\n", version.HumanoidVersion(), time.Now())
 
-	data := dbAssets.Bytes(version.GetErrPath())
+	data := dbAssets.Find(version.GetErrPath())
 	if len(data) == 0 {
 		fmt.Println("Rollback SQL does not exist.")
 		fmt.Println()

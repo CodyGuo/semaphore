@@ -11,7 +11,7 @@ ENV SEMAPHORE_VERSION="development" SEMAPHORE_ARCH="linux_amd64" \
 # hadolint ignore=DL3013
 RUN set -ex \
     && sed -i 's/http/https/g' /etc/apk/repositories \
-    && apk add --no-cache git mysql-client python py-pip py-openssl openssl ca-certificates curl curl-dev openssh-client tini nodejs nodejs-npm bash rsync \
+    && apk add --no-cache --virtual build-deps git mysql-client python py-pip py-openssl openssl ca-certificates curl curl-dev openssh-client tini nodejs nodejs-npm bash rsync \
     && apk --update add --virtual build-dependencies python-dev libffi-dev openssl-dev build-base \
     && pip install --upgrade pip cffi   \
     && pip install ansible              \

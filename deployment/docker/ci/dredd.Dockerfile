@@ -19,7 +19,8 @@ RUN set -ex \
     && task deps:tools \
     && task deps:be \
     && task compile:be \
-    && task compile:api:hooks
+    && task compile:api:hooks \
+    && go get -u -v github.com/snikch/goodman/cmd/goodman
 
 FROM apiaryio/dredd:13.0.0
 
@@ -35,6 +36,7 @@ ENV GOPATH=${GOPATH} \
 WORKDIR /go/src/github.com/CodyGuo/semaphore
 
 COPY --from=Builder /go/src /go/src
+COPY --from=Builder /go/bin /go/bin
 COPY deployment/docker/ci/dredd/entrypoint /usr/local/bin
 
 ENTRYPOINT ["/usr/local/bin/entrypoint"]

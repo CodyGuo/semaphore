@@ -10,9 +10,10 @@ ENV SEMAPHORE_VERSION="development" SEMAPHORE_ARCH="linux_amd64" \
 
 # hadolint ignore=DL3013
 RUN set -ex \
-    && apk add --no-cache --virtual mysql-client \
-    && apk add --no-cache --virtual openssl openssl-dev ca-certificates curl curl-dev openssh-client tini nodejs nodejs-npm bash rsync \
-    && apk add --no-cache --virtual python py-pip py-openssl python-dev \
+    && apk add --no-cache git mysql-client \
+    && apk add --no-cache openssl openssl-dev ca-certificates curl curl-dev openssh-client tini nodejs nodejs-npm bash rsync \
+    && apk add --no-cache py-pip py-openssl \
+    && apk --update add --no-cache --virtual python-dev \
     && apk --update add --virtual build-dependencies libffi-dev build-base \
     && pip install --upgrade pip cffi   \
     && pip install ansible              \

@@ -60,7 +60,7 @@ definitions:
         type: boolean
       admin:
         type: boolean
-        x-example: true
+        default: true
   User:
     type: object
     properties:
@@ -80,7 +80,7 @@ definitions:
         type: boolean
       admin:
         type: boolean
-        x-example: true
+        default: true
 
   APIToken:
     type: object

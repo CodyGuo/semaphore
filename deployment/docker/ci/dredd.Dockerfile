@@ -1,24 +1,40 @@
-# hadolint ignore=DL3006
-FROM tomwhiston/dredd:latest
+FROM golang:1.13-alpine as Builder
 
-ENV TASK_VERSION=v2.0.1 \
-    GOPATH=/home/developer/go \
+ARG APP_HOME=/go/src/github.com/CodyGuo/semaphore
+
+ENV GO111MODULE="on" \
+    GOPATH=/go
+
+WORKDIR ${APP_HOME}
+
+COPY . ${APP_HOME}
+
+RUN set -ex \
+    && apk add --no-cache git curl bash \
+    && cd $(go env GOPATH) \
+    && git clone https://github.com/go-task/task \
+    && cd task \
+    && go install -v ./cmd/task \
+    && cd ${APP_HOME} \
+    && task deps:tools \
+    && task deps:be \
+    && task compile:be \
+    && task compile:api:hooks
+
+FROM apiaryio/dredd:13.0.0
+
+ARG GOPATH=/go
+
+ENV GOPATH=${GOPATH} \
+    PATH=${GOPATH}/bin:/usr/local/bin:${PATH} \
     SEMAPHORE_SERVICE=semaphore_ci \
     SEMAPHORE_PORT=3000 \
     MYSQL_SERVICE=mysql \
     MYSQL_PORT=3306
 
-# We need the source and task to compile the hooks
-USER 0
-RUN dnf install -y nc
-COPY deployment/docker/ci/dredd/entrypoint /usr/local/bin
-COPY . /home/developer/go/src/github.com/CodyGuo/semaphore
-WORKDIR /usr/local/bin
-RUN curl -L "https://github.com/go-task/task/releases/download/${TASK_VERSION}/task_linux_amd64.tar.gz" | tar xvz && \
-    chown -R developer /home/developer/go
+WORKDIR /go/src/github.com/CodyGuo/semaphore
 
-# Get tools and do compile
-WORKDIR /home/developer/go/src/github.com/CodyGuo/semaphore
-RUN task deps:tools && task deps:be && task compile:be && task compile:api:hooks
+COPY --from=Builder /go/src /go/src
+COPY deployment/docker/ci/dredd/entrypoint /usr/local/bin
 
 ENTRYPOINT ["/usr/local/bin/entrypoint"]

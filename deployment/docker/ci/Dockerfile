@@ -5,25 +5,28 @@ LABEL maintainer="Tom Whiston <tom.whiston@gmail.com>"
 
 ENV SEMAPHORE_VERSION="development" SEMAPHORE_ARCH="linux_amd64" \
     SEMAPHORE_CONFIG_PATH="${SEMAPHORE_CONFIG_PATH:-/etc/semaphore}" \
-    APP_ROOT="/go/src/github.com/CodyGuo/semaphore/"
+    APP_ROOT="/go/src/github.com/CodyGuo/semaphore/" \
+    GO111MODULE="on"
 
 # hadolint ignore=DL3013
-RUN apk add --no-cache git mysql-client python py-pip py-openssl openssl ca-certificates curl curl-dev openssh-client tini nodejs nodejs-npm bash rsync && \
-    apk --update add --virtual build-dependencies python-dev libffi-dev openssl-dev build-base && \
-    pip install --upgrade pip cffi   && \
-    pip install ansible              && \
-    apk del build-dependencies && \
-    rm -rf /var/cache/apk/*    && \
-    adduser -D -u 1002 -g 0 semaphore && \
-    mkdir -p /go/src/github.com/CodyGuo/semaphore && \
-    mkdir -p /tmp/semaphore && \
-    mkdir -p /etc/semaphore && \
-    chown -R semaphore:0 /go && \
-    chown -R semaphore:0 /tmp/semaphore && \
-    chown -R semaphore:0 /etc/semaphore && \
-    ssh-keygen -t rsa -q -f "/root/.ssh/id_rsa" -N ""       && \
-    ssh-keyscan -H github.com > /root/.ssh/known_hosts      && \
-    cd $(go env GOPATH) && curl -sL https://taskfile.dev/install.sh | sh
+RUN set -ex \
+    && apk add --no-cache git mysql-client python py-pip py-openssl openssl ca-certificates curl curl-dev openssh-client tini nodejs nodejs-npm bash rsync \
+    && apk --update add --virtual build-dependencies python-dev libffi-dev openssl-dev build-base \
+    && pip install --upgrade pip cffi   \
+    && pip install ansible              \
+    && apk del build-dependencies \
+    && rm -rf /var/cache/apk/*    \
+    && adduser -D -u 1002 -g 0 semaphore \
+    && mkdir -p /go/src/github.com/CodyGuo/semaphore \
+    && mkdir -p /tmp/semaphore \
+    && mkdir -p /etc/semaphore \
+    && chown -R semaphore:0 /go \
+    && chown -R semaphore:0 /tmp/semaphore \
+    && chown -R semaphore:0 /etc/semaphore \
+    && ssh-keygen -t rsa -q -f "/root/.ssh/id_rsa" -N "" \
+    && ssh-keyscan -H github.com > /root/.ssh/known_hosts \
+    && cd $(go env GOPATH) && git clone https://github.com/go-task/task \
+    && cd task && go install -v ./cmd/task
 
 # Copy in app source
 WORKDIR ${APP_ROOT}

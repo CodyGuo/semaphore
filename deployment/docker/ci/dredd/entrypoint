@@ -1,6 +1,5 @@
-#!/usr/bin/env bash
-
-set -e
+#!/usr/bin/env sh
+set -ex
 
 echo "---> Add Config"
 cat > ./.dredd/config.json <<EOF

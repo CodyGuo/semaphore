@@ -80,7 +80,6 @@ definitions:
         type: boolean
       admin:
         type: boolean
-        default: true
 
   APIToken:
     type: object
@@ -133,6 +132,7 @@ definitions:
         type: string
       secret:
         type: string
+        default: 'secret'
   AccessKey:
     type: object
     properties:

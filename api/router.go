@@ -92,13 +92,13 @@ func Route() *mux.Router {
 	apiUsers := api.PathPrefix("/users").Subrouter()
 	apiUsers.Use(mustBeAdminMiddleware)
 	apiUsers.HandleFunc("", addUser).Methods("POST")
+	apiUsers.HandleFunc("/{user_id}", deleteUser).Methods("DELETE")
 
-	apiUsersManagement := apiUsers.PathPrefix("/{user_id}").Subrouter()
+	apiUsersManagement := api.PathPrefix("/users/{user_id}").Subrouter()
 	apiUsersManagement.Use(getUserMiddleware)
 	apiUsersManagement.HandleFunc("", getUser).Methods("GET", "HEAD")
 	apiUsersManagement.HandleFunc("", updateUser).Methods("PUT")
 	apiUsersManagement.HandleFunc("/password", updateUserPassword).Methods("POST")
-	apiUsersManagement.HandleFunc("", deleteUser).Methods("DELETE")
 
 	apiProjects := api.PathPrefix("/projects").Subrouter()
 	apiProjects.Use(mustBeAdminMiddleware)

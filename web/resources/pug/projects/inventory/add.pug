@@ -7,36 +7,36 @@
 		.form-group
 			label.control-label.col-sm-4 Name
 			.col-sm-6
-				input.form-control(type="text" ng-model="inventory.name" placeholder="Inventory Name")
+				input.form-control(type="text" ng-model="inventory.name" placeholder="Inventory Name" ng-readonly="!project_user.admin && !user.admin")
 
 		.form-group
 			label.control-label.col-sm-4 Type
 			.col-sm-6
-				select.form-control(ng-model="inventory.type" ng-init="inventory.type = inventory.type || 'static'")
+				select.form-control(ng-model="inventory.type" ng-init="inventory.type = inventory.type || 'static'" ng-disabled="!project_user.admin && !user.admin")
 					option(value="static") Static
 					option(value="file") File
 
 		.form-group(ng-if="inventory.type == 'file'")
 			label.control-label.col-sm-4 Path to inventory file
 			.col-sm-6
-				input.form-control(type="text" ng-model="inventory.inventory")
+				input.form-control(type="text" ng-model="inventory.inventory" ng-readonly="!project_user.admin && !user.admin")
 
 		.form-group(ng-if="inventory.type != 'static' && inventory.type != 'file'")
 			label.control-label.col-sm-4 Remote inventory key
 			.col-sm-6
-				select.form-control(ng-model="inventory.key_id" ng-options="key.id as key.name for key in remote_keys")
+				select.form-control(ng-model="inventory.key_id" ng-options="key.id as key.name for key in remote_keys" ng-disabled="!project_user.admin && !user.admin")
 					option(value="") -- Select Key --
 
 		.form-group
 			label.control-label.col-sm-4 SSH Key
 			.col-sm-6
-				select.form-control(ng-model="inventory.ssh_key_id" ng-options="key.id as key.name for key in sshKeys")
+				select.form-control(ng-model="inventory.ssh_key_id" ng-options="key.id as key.name for key in sshKeys" ng-disabled="!project_user.admin && !user.admin")
 					option(value="") -- Select SSH Key --
 				p.help-block Used to log into the servers in this inventory
 
 .modal-footer
 	button.btn.btn-default.pull-left(ng-click="$dismiss()") Dismiss
-	button.btn.btn-danger(ng-if="inventory.id" ng-click="$close({ remove: true })") Delete
-	button.btn.btn-success(ng-click="$close({ inventory: inventory })")
+	button.btn.btn-danger(ng-if="inventory.id && project_user.admin || user.admin" ng-click="$close({ remove: true })") Delete
+	button.btn.btn-success(ng-if="project_user.admin || user.admin" ng-click="$close({ inventory: inventory })" ng-disabled="!inventory.name || !inventory.ssh_key_id")
 		span(ng-if="!inventory.id") Create
 		span(ng-if="inventory.id") Update

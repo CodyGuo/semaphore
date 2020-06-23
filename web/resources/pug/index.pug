@@ -20,7 +20,7 @@ html(lang="en" ng-app="semaphore")
 					a(ui-sref="dashboard") Dashboard
 				//- li(ng-class="{ active: $state.includes('keys') }")
 				//- 	a(ui-sref="keys") Key Store
-				li(ng-class="{ active: $state.includes('users') }")
+				li(ng-class="{ active: $state.includes('users') }" ng-if="user.admin")
 					a(ui-sref="users.list") Users
 
 			ul.nav.navbar-nav.navbar-right(style="margin-right: 0;")
@@ -36,7 +36,7 @@ html(lang="en" ng-app="semaphore")
 						i.fa.fa-fw.fa-cog
 					ul(uib-dropdown-menu)
 						li.dropdown-header semaphore {{ semaphore.version }}
-						li: a(ui-sref="admin")
+						li: a(ui-sref="admin" ng-if="user.admin")
 							span(ng-if="semaphore.update")
 								i.fa.fa-fw.fa-exclamation-circle
 								| &nbsp;

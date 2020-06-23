@@ -1,6 +1,18 @@
 define(function () {
 	app.registerController('ProjectInventoryCtrl', ['$scope', '$http', '$uibModal', 'Project', '$rootScope', 'SweetAlert', function ($scope, $http, $modal, Project, $rootScope, SweetAlert) {
 		$scope.reload = function () {
+		    $http.get(Project.getURL() + '/users?sort=name&order=asc').then(function (response) {
+			  var users = response.data;
+				$scope.project_user = null;
+				$scope.users = users;
+
+				for (var i = 0; i < users.length; i++) {
+					if (users[i].id == $scope.user.id) {
+						$scope.project_user = users[i];
+						break;
+					}
+				}
+			});
 			$http.get(Project.getURL() + '/inventory?sort=name&order=asc').then(function (inventory) {
 				$scope.inventory = inventory.data;
 			});
@@ -54,6 +66,7 @@ define(function () {
 			$scope.getKeys(function (keys) {
 				var scope = $rootScope.$new();
 				scope.sshKeys = keys;
+                scope.project_user = $scope.project_user;
 
 				$modal.open({
 					templateUrl: '/tpl/projects/inventory/add.html',
@@ -75,13 +88,14 @@ define(function () {
 				var scope = $rootScope.$new();
 				scope.sshKeys = keys;
 				scope.inventory = JSON.parse(JSON.stringify(inventory));
+                scope.project_user = $scope.project_user;
 
 				$modal.open({
 					templateUrl: '/tpl/projects/inventory/add.html',
 					scope: scope
 				}).result.then(function (opts) {
 					if (opts.remove) {
-						console.log(inventory)
+						// console.log(inventory)
 						return $scope.remove(inventory);
 					}
 
@@ -99,6 +113,7 @@ define(function () {
 		$scope.editContent = function (inventory) {
 			var scope = $rootScope.$new();
 			scope.inventory = inventory.inventory;
+            scope.project_user = $scope.project_user;
 
 			$modal.open({
 				templateUrl: '/tpl/projects/inventory/edit.html',

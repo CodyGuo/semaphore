@@ -4,7 +4,7 @@
 			h4.no-top-margin Events
 			ul.list-unstyled
 				li(ng-repeat="event in events")
-					strong: time(ng-bind="event.created | date:'short'")
+					strong: time(ng-bind="event.created | date:'yyyy/MM/dd HH:mm:ss.sss'")
 					span :&nbsp;
 					a(ng-if="event.project_id != null" ui-sref="project.dashboard({ project_id: event.project_id })") {{ event.project_name }}
 					span(ng-if="event.project_id != null") &nbsp;
@@ -14,6 +14,6 @@
 		.col-md-4
 			.panel.panel-default
 				.panel-heading Projects
-					button.btn.btn-default.btn-xs.pull-right(ng-click="addProject()"): i.fa.fa-fw.fa-plus
+					button.btn.btn-default.btn-xs.pull-right(ng-click="addProject()" ng-if="user.admin"): i.fa.fa-fw.fa-plus
 				ul.list-group
 					li.list-group-item(ng-repeat="project in projects" ui-sref="project.dashboard({ project_id: project.id })" style="cursor: pointer;") {{ project.name }}

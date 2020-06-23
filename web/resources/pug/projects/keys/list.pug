@@ -1,5 +1,5 @@
 h3 Keys
-	button.btn.btn-success.btn-xs.pull-right(ng-click="add()") Create Key
+	button.btn.btn-success.btn-xs.pull-right(ng-click="add()" ng-if="user.admin || project_user.admin") Create Key
 
 table.table.table-hover
 	tbody: tr(ng-repeat="key in keys" ng-click="update(key)" style="cursor: pointer;" ng-class="{ danger: key.removed }")

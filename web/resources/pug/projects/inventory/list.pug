@@ -1,5 +1,5 @@
 h3 Inventory
-	button.btn.btn-success.btn-xs.pull-right(ng-click="add()") Create Inventory
+	button.btn.btn-success.btn-xs.pull-right(ng-click="add()" ng-if="user.admin || project_user.admin") Create Inventory
 
 table.table.table-hover
 	tbody: tr(ng-repeat="inv in inventory" ng-click="edit(inv)" ng-class="{ danger: inv.removed }" style="cursor: pointer;")

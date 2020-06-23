@@ -5,13 +5,13 @@
 		.form-group
 			label.control-label.col-sm-4 User
 			.col-sm-6
-				select.form-control(ng-model="user.user_id" ng-options="user.id as user.name for user in users")
+				select.form-control(ng-model="u.user_id" ng-options="u.id as u.name for u in users")
 					option(value="") -- Select User --
 		.form-group
 			.col-sm-6.col-sm-offset-4
 				.checkbox: label
-					input(type="checkbox" ng-model="user.admin")
+					input(type="checkbox" ng-model="u.admin" ng-disabled="!u.user_id")
 					| Administrator
 .modal-footer
 	button.btn.btn-default.pull-left(ng-click="$dismiss()") Dismiss
-	button.btn.btn-success(ng-click="$close(user)") Link
+	button.btn.btn-success(ng-click="$close(u)" ng-disabled="!u.user_id") Link

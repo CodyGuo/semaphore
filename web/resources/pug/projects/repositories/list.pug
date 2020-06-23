@@ -1,5 +1,5 @@
 h3 Repositories
-	button.btn.btn-success.btn-xs.pull-right(ng-click="add()") Create Repository
+	button.btn.btn-success.btn-xs.pull-right(ng-click="add()" ng-if="user.admin || project_user.admin") Create Repository
 
 table.table.table-hover
 	thead: tr

@@ -8,20 +8,20 @@
 		.form-group
 			label.control-label.col-sm-4 Name
 			.col-sm-6
-				input.form-control(type="text" ng-model="repo.name" placeholder="Friendly Repository Name")
+				input.form-control(type="text" ng-model="repo.name" placeholder="Friendly Repository Name" ng-readonly="!project_user.admin && !user.admin")
 		.form-group
 			label.control-label.col-sm-4 Repository
 			.col-sm-6
-				input.form-control(type="text" ng-model="repo.git_url" placeholder="git@github.com:user/repo.git")
+				input.form-control(type="text" ng-model="repo.git_url" placeholder="git@github.com:user/repo.git" ng-readonly="!project_user.admin && !user.admin")
 		.form-group
 			label.control-label.col-sm-4 SSH Key
 			.col-sm-6
-				select.form-control(ng-model="repo.ssh_key_id" ng-options="key.id as key.name for key in keys")
+				select.form-control(ng-model="repo.ssh_key_id" ng-options="key.id as key.name for key in keys" ng-disabled="!project_user.admin && !user.admin")
 					option(value="") -- Select SSH Key --
 
 .modal-footer
 	button.btn.btn-default.pull-left(ng-click="$dismiss()") Dismiss
-	button.btn.btn-danger(ng-if="repo.id" ng-click="$close({ remove: true })") Delete
-	button.btn.btn-success(ng-click="$close({ repo: repo })")
+	button.btn.btn-danger(ng-if="repo.id && project_user.admin || repo.id && user.admin" ng-click="$close({ remove: true })") Delete
+	button.btn.btn-success(ng-if="project_user.admin || user.admin" ng-click="$close({ repo: repo })" ng-disabled="!repo.name || !repo.git_url || !repo.ssh_key_id")
 		span(ng-if="!repo.id") Create
 		span(ng-if="repo.id") Update

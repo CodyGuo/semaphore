@@ -2,7 +2,7 @@
 	h3.modal-title Edit Inventory
 
 .modal-body(style="padding: 0")
-	div(ui-ace="{mode: 'ini', workerPath: '/public/js/ace/'}" style="height: 200px" ng-model="inventory")
+	div(ui-ace="{mode: 'ini', workerPath: '/public/js/ace/'}" style="height: 200px" ng-model="inventory" ng-readonly="!project_user.admin && !user.admin")
 .modal-footer
 	button.btn.btn-default.pull-left(ng-click="$dismiss()") Cancel
-	button.btn.btn-success(ng-click="$close(inventory)") Save Changes
+	button.btn.btn-success(ng-if="project_user.admin || user.admin" ng-click="$close(inventory)") Save Changes

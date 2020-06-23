@@ -57,6 +57,18 @@ define(['controllers/projects/taskRunner'], function () {
 		}
 
 		$scope.reload = function () {
+		    $http.get(Project.getURL() + '/users?sort=name&order=asc').then(function (response) {
+			  var users = response.data;
+				$scope.project_user = null;
+				$scope.users = users;
+
+				for (var i = 0; i < users.length; i++) {
+					if (users[i].id == $scope.user.id) {
+						$scope.project_user = users[i];
+						break;
+					}
+				}
+			});
 			$http.get(Project.getURL() + '/templates?sort=alias&order=asc').then(function (response) {
 			  var templates = response.data;
 				var hiddenTemplates = getHiddenTemplates();
@@ -84,6 +96,7 @@ define(['controllers/projects/taskRunner'], function () {
 			scope.inventory = $scope.inventory;
 			scope.repositories = $scope.repos;
 			scope.environment = $scope.environment;
+            scope.project_user = $scope.project_user;
 
 			$modal.open({
 				templateUrl: '/tpl/projects/templates/add.html',
@@ -105,6 +118,7 @@ define(['controllers/projects/taskRunner'], function () {
 			scope.inventory = $scope.inventory;
 			scope.repositories = $scope.repos;
 			scope.environment = $scope.environment;
+            scope.project_user = $scope.project_user;
 
 			var modal = $modal.open({
 				templateUrl: '/tpl/projects/templates/add.html',
@@ -128,9 +142,14 @@ define(['controllers/projects/taskRunner'], function () {
 		}
 
 		$scope.run = function (tpl) {
+            let scope = $rootScope.$new();
+            scope.tpl = tpl;
+            scope.project_user = $scope.project_user;
+
 			$modal.open({
 				templateUrl: '/tpl/projects/createTaskModal.html',
 				controller: 'CreateTaskCtrl',
+                scope: scope,
 				resolve: {
 					Project: function () {
 						return Project;
@@ -140,9 +159,10 @@ define(['controllers/projects/taskRunner'], function () {
 					}
 				}
 			}).result.then(function (task) {
-				var scope = $rootScope.$new();
+				let scope = $rootScope.$new();
 				scope.task = task;
 				scope.project = Project;
+                scope.project_user = $scope.project_user;
 
 				$modal.open({
 					templateUrl: '/tpl/projects/taskModal.html',
@@ -190,6 +210,7 @@ define(['controllers/projects/taskRunner'], function () {
 			scope.inventory = $scope.inventory;
 			scope.repositories = $scope.repos;
 			scope.environment = $scope.environment;
+            scope.project_user = $scope.project_user;
 
 			$modal.open({
 				templateUrl: '/tpl/projects/templates/add.html',

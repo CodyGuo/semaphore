@@ -1,14 +1,26 @@
 define(function () {
 	app.registerController('ProjectRepositoriesCtrl', ['$scope', '$http', 'Project', '$uibModal', '$rootScope', 'SweetAlert', function ($scope, $http, Project, $modal, $rootScope, SweetAlert) {
 		$scope.reload = function () {
+		    $http.get(Project.getURL() + '/users?sort=name&order=asc').then(function (response) {
+			  var users = response.data;
+				$scope.project_user = null;
+				$scope.users = users;
+
+				for (var i = 0; i < users.length; i++) {
+					if (users[i].id == $scope.user.id) {
+						$scope.project_user = users[i];
+						break;
+					}
+				}
+			});
 			$http.get(Project.getURL() + '/keys?type=ssh&sort=name&order=asc').then(function (keys) {
 				$scope.sshKeys = keys.data;
 
 				$http.get(Project.getURL() + '/repositories?sort=name&order=asc').then(function (repos) {
 					repos.data.forEach(function (repo) {
-						for (var i = 0; i < keys.length; i++) {
-							if (repo.ssh_key_id == keys[i].id) {
-								repo.ssh_key = keys[i];
+						for (var i = 0; i < keys.data.length; i++) {
+							if (repo.ssh_key_id == keys.data[i].id) {
+								repo.ssh_key = keys.data[i];
 								break;
 							}
 						}
@@ -66,6 +78,7 @@ define(function () {
 			var scope = $rootScope.$new();
 			scope.keys = $scope.sshKeys;
 			scope.repo = JSON.parse(JSON.stringify(repo));
+            scope.project_user = $scope.project_user;
 
 			$modal.open({
 				templateUrl: '/tpl/projects/repositories/add.html',
@@ -87,6 +100,7 @@ define(function () {
 		$scope.add = function () {
 			var scope = $rootScope.$new();
 			scope.keys = $scope.sshKeys;
+            scope.project_user = $scope.project_user;
 
 			$modal.open({
 				templateUrl: '/tpl/projects/repositories/add.html',

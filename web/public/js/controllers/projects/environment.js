@@ -1,6 +1,18 @@
 define(function () {
 	app.registerController('ProjectEnvironmentCtrl', ['$scope', '$http', '$uibModal', 'Project', '$rootScope', 'SweetAlert', function ($scope, $http, $modal, Project, $rootScope, SweetAlert) {
 		$scope.reload = function () {
+		    $http.get(Project.getURL() + '/users?sort=name&order=asc').then(function (response) {
+			  var users = response.data;
+				$scope.project_user = null;
+				$scope.users = users;
+
+				for (var i = 0; i < users.length; i++) {
+					if (users[i].id == $scope.user.id) {
+						$scope.project_user = users[i];
+						break;
+					}
+				}
+			});
 			$http.get(Project.getURL() + '/environment?sort=name&order=asc').then(function (environment) {
 				$scope.environment = environment.data;
 			});
@@ -54,6 +66,7 @@ define(function () {
 			scope.env = {
 				json: '{}'
 			};
+            scope.project_user = $scope.project_user;
 
 			$modal.open({
 				templateUrl: '/tpl/projects/environment/add.html',
@@ -72,6 +85,7 @@ define(function () {
 		$scope.editEnvironment = function (env) {
 			var scope = $rootScope.$new();
 			scope.env = env;
+            scope.project_user = $scope.project_user;
 
 			$modal.open({
 				templateUrl: '/tpl/projects/environment/add.html',

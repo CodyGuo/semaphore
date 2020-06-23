@@ -98,13 +98,14 @@ func GetTemplates(w http.ResponseWriter, r *http.Request) {
 // AddTemplate adds a template to the database
 func AddTemplate(w http.ResponseWriter, r *http.Request) {
 	project := context.Get(r, "project").(db.Project)
+	user := context.Get(r, "user").(*db.User)
 
-	var template db.Template
-	if err := util.Bind(w, r, &template); err != nil {
+	var tpl db.Template
+	if err := util.Bind(w, r, &tpl); err != nil {
 		return
 	}
 
-	res, err := db.Mysql.Exec("insert into project__template set ssh_key_id=?, project_id=?, inventory_id=?, repository_id=?, environment_id=?, alias=?, playbook=?, arguments=?, override_args=?", template.SSHKeyID, project.ID, template.InventoryID, template.RepositoryID, template.EnvironmentID, template.Alias, template.Playbook, template.Arguments, template.OverrideArguments)
+	res, err := db.Mysql.Exec("insert into project__template set ssh_key_id=?, project_id=?, inventory_id=?, repository_id=?, environment_id=?, alias=?, playbook=?, arguments=?, override_args=?", tpl.SSHKeyID, project.ID, tpl.InventoryID, tpl.RepositoryID, tpl.EnvironmentID, tpl.Alias, tpl.Playbook, tpl.Arguments, tpl.OverrideArguments)
 	if err != nil {
 		panic(err)
 	}
@@ -114,45 +115,46 @@ func AddTemplate(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	template.ID = int(insertID)
+	tpl.ID = int(insertID)
 
 	objType := "template"
-	desc := "Template ID " + strconv.Itoa(template.ID) + " created"
+	desc := "Template Name " + tpl.Alias + "(" + strconv.Itoa(tpl.ID) + ") created By " + user.Name
 	if err := (db.Event{
 		ProjectID:   &project.ID,
 		ObjectType:  &objType,
-		ObjectID:    &template.ID,
+		ObjectID:    &tpl.ID,
 		Description: &desc,
 	}.Insert()); err != nil {
 		panic(err)
 	}
 
-	util.WriteJSON(w, http.StatusCreated, template)
+	util.WriteJSON(w, http.StatusCreated, tpl)
 }
 
 // UpdateTemplate writes a template to an existing key in the database
 func UpdateTemplate(w http.ResponseWriter, r *http.Request) {
-	oldTemplate := context.Get(r, "template").(db.Template)
+	oldTpl := context.Get(r, "template").(db.Template)
+	user := context.Get(r, "user").(*db.User)
 
-	var template db.Template
-	if err := util.Bind(w, r, &template); err != nil {
+	var tpl db.Template
+	if err := util.Bind(w, r, &tpl); err != nil {
 		return
 	}
 
-	if template.Arguments != nil && *template.Arguments == "" {
-		template.Arguments = nil
+	if tpl.Arguments != nil && *tpl.Arguments == "" {
+		tpl.Arguments = nil
 	}
 
-	if _, err := db.Mysql.Exec("update project__template set ssh_key_id=?, inventory_id=?, repository_id=?, environment_id=?, alias=?, playbook=?, arguments=?, override_args=? where id=?", template.SSHKeyID, template.InventoryID, template.RepositoryID, template.EnvironmentID, template.Alias, template.Playbook, template.Arguments, template.OverrideArguments, oldTemplate.ID); err != nil {
+	if _, err := db.Mysql.Exec("update project__template set ssh_key_id=?, inventory_id=?, repository_id=?, environment_id=?, alias=?, playbook=?, arguments=?, override_args=? where id=?", tpl.SSHKeyID, tpl.InventoryID, tpl.RepositoryID, tpl.EnvironmentID, tpl.Alias, tpl.Playbook, tpl.Arguments, tpl.OverrideArguments, oldTpl.ID); err != nil {
 		panic(err)
 	}
 
-	desc := "Template ID " + strconv.Itoa(template.ID) + " updated"
 	objType := "template"
+	desc := "Template Name " + tpl.Alias + "(" + strconv.Itoa(tpl.ID) + ") updated By " + user.Name
 	if err := (db.Event{
-		ProjectID:   &oldTemplate.ProjectID,
+		ProjectID:   &oldTpl.ProjectID,
 		Description: &desc,
-		ObjectID:    &oldTemplate.ID,
+		ObjectID:    &oldTpl.ID,
 		ObjectType:  &objType,
 	}.Insert()); err != nil {
 		panic(err)
@@ -164,12 +166,13 @@ func UpdateTemplate(w http.ResponseWriter, r *http.Request) {
 // RemoveTemplate deletes a template from the database
 func RemoveTemplate(w http.ResponseWriter, r *http.Request) {
 	tpl := context.Get(r, "template").(db.Template)
+	user := context.Get(r, "user").(*db.User)
 
 	if _, err := db.Mysql.Exec("delete from project__template where id=?", tpl.ID); err != nil {
 		panic(err)
 	}
 
-	desc := "Template ID " + strconv.Itoa(tpl.ID) + " deleted"
+	desc := "Template Name " + tpl.Alias + "(" + strconv.Itoa(tpl.ID) + ") deleted By " + user.Name
 	if err := (db.Event{
 		ProjectID:   &tpl.ProjectID,
 		Description: &desc,

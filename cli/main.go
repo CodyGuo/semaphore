@@ -17,8 +17,8 @@ import (
 	"github.com/CodyGuo/semaphore/db"
 	"github.com/CodyGuo/semaphore/util"
 	"github.com/gorilla/handlers"
-	"golang.org/x/crypto/bcrypt"
 	log "github.com/sirupsen/logrus"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func main() {

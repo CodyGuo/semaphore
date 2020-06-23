@@ -2,6 +2,7 @@ package api
 
 import (
 	"database/sql"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -32,7 +33,13 @@ func addUser(w http.ResponseWriter, r *http.Request) {
 	editor := context.Get(r, "user").(*db.User)
 	if !editor.Admin {
 		log.Warn(editor.Username + " is not permitted to create users")
-		w.WriteHeader(http.StatusUnauthorized)
+		w.WriteHeader(http.StatusForbidden)
+		return
+	}
+
+	if err := checkUserExist(user.Username, user.Email); err != nil {
+		log.Warn(user.Username+" "+user.Email+", error: ", err)
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
@@ -76,7 +83,7 @@ func getUserMiddleware(next http.Handler) http.Handler {
 		editor := context.Get(r, "user").(*db.User)
 		if !editor.Admin && editor.ID != user.ID {
 			log.Warn(editor.Username + " is not permitted to edit users")
-			w.WriteHeader(http.StatusUnauthorized)
+			w.WriteHeader(http.StatusForbidden)
 			return
 		}
 
@@ -96,13 +103,13 @@ func updateUser(w http.ResponseWriter, r *http.Request) {
 
 	if !editor.Admin && editor.ID != oldUser.ID {
 		log.Warn(editor.Username + " is not permitted to edit users")
-		w.WriteHeader(http.StatusUnauthorized)
+		w.WriteHeader(http.StatusForbidden)
 		return
 	}
 
 	if editor.ID == oldUser.ID && oldUser.Admin != user.Admin {
 		log.Warn("User can't edit his own role")
-		w.WriteHeader(http.StatusUnauthorized)
+		w.WriteHeader(http.StatusForbidden)
 		return
 	}
 
@@ -112,11 +119,39 @@ func updateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if err := checkUserExist(editor.Username, editor.Email); err != nil {
+		log.Warn(editor.Username+" "+editor.Email+", error: ", err)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	if _, err := db.Mysql.Exec("update user set name=?, username=?, email=?, alert=?, admin=? where id=?", user.Name, user.Username, user.Email, user.Alert, user.Admin, oldUser.ID); err != nil {
 		panic(err)
 	}
 
 	w.WriteHeader(http.StatusNoContent)
+}
+
+func checkUserExist(username, email string) error {
+	var user db.User
+	if err := db.Mysql.SelectOne(&user, "select id from user where username=?", username); err != nil {
+		if err != sql.ErrNoRows {
+			return err
+		}
+	}
+	if user.ID > 0 {
+		return fmt.Errorf("the username %s already exists", username)
+	}
+
+	if err := db.Mysql.SelectOne(&user, "select id from user where email=?", email); err != nil {
+		if err != sql.ErrNoRows {
+			return err
+		}
+	}
+	if user.ID > 0 {
+		return fmt.Errorf("the email %s already exists", email)
+	}
+	return nil
 }
 
 func updateUserPassword(w http.ResponseWriter, r *http.Request) {

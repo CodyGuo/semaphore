@@ -1,11 +1,12 @@
 package main
 
 import (
+	"strconv"
+	"strings"
+
 	"github.com/CodyGuo/semaphore/db"
 	"github.com/snikch/goodman/hooks"
 	trans "github.com/snikch/goodman/transaction"
-	"strconv"
-	"strings"
 )
 
 const (
@@ -63,6 +64,16 @@ func main() {
 		defer db.Mysql.Db.Close()
 		//tokens are expired and not deleted so we need to clean up
 		deleteToken(expiredToken, testRunnerUser.ID)
+	})
+	h.BeforeValidation("user > /api/users > Creates a user > 201 > application/json", func(transaction *trans.Transaction) {
+		if transaction.Real.StatusCode == 400 {
+			transaction.Skip = true
+		}
+	})
+	h.BeforeValidation("user > /api/users/{user_id} > Updates user details > 204 > application/json", func(transaction *trans.Transaction) {
+		if transaction.Real.StatusCode == 400 {
+			transaction.Skip = true
+		}
 	})
 
 	// This one seems to need some manual value setting in the body

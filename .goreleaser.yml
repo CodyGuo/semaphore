@@ -36,7 +36,7 @@ archive:
 sign:
    artifacts: checksum
    # gpg --sign -u "9B25 8A9C 32B9 7E50 E753  3575 DE95 8D8F 20C7 845F" --pinentry-mode loopback --yes --batch --passphrase "${GPG_PASS}" --output ${signature} --detach-sign "${artifact}"
-   args: ["-u", "9B25 8A9C 32B9 7E50 E753  3575 DE95 8D8F 20C7 845F", "--pinentry-mode", "loopback", "--yes", "--batch", "--output", "${signature}", "--detach-sign", "${artifact}"]
+   args: ["-u", "6A85 580C 2144 5577 79A7  E1BD F729 3277 E93F C9A0", "--pinentry-mode", "loopback", "--yes", "--batch", "--output", "${signature}", "--detach-sign", "${artifact}"]
 
 # Start the snapshot name with a numerical value
 # so it does not need to be force installed

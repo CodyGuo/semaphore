@@ -3,14 +3,19 @@
 set -e
 
 # Go build environment
-export GOROOT=/usr/lib/go
 export GOPATH=/go
 export GOBIN=/go/bin
 export GO111MODULE="on"
 export PATH="${PATH}:${GOBIN}"
 
+APP_HOME=`pwd`
+
 # Get prerequisites for building the app
-go get -u -v github.com/go-task/task/cmd/task
+cd $GOPATH
+git clone https://github.com/go-task/task
+cd task
+go install -v ./cmd/task
+cd $APP_HOME
 
 # Compile and build
 task deps

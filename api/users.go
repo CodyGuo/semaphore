@@ -119,12 +119,6 @@ func updateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := checkUserExist(editor.Username, editor.Email); err != nil {
-		log.Warn(editor.Username+" "+editor.Email+", error: ", err)
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
 	if _, err := db.Mysql.Exec("update user set name=?, username=?, email=?, alert=?, admin=? where id=?", user.Name, user.Username, user.Email, user.Alert, user.Admin, oldUser.ID); err != nil {
 		panic(err)
 	}

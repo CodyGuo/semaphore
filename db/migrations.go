@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"time"
 
+	log "github.com/CodyGuo/glog"
 	"github.com/go-sql-driver/mysql"
 	"github.com/gobuffalo/packr"
-	log "github.com/sirupsen/logrus"
 )
 
 var dbAssets = packr.NewBox("./migrations")

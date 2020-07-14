@@ -3,6 +3,7 @@ module github.com/CodyGuo/semaphore
 go 1.13
 
 require (
+	github.com/CodyGuo/glog v1.0.6
 	github.com/go-openapi/loads v0.19.5
 	github.com/go-openapi/runtime v0.19.16 // indirect
 	github.com/go-openapi/spec v0.19.8
@@ -27,7 +28,7 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.0 // indirect
 	github.com/rogpeppe/go-internal v1.6.0 // indirect
 	github.com/russross/blackfriday v1.5.2
-	github.com/sirupsen/logrus v1.6.0
+	github.com/sirupsen/logrus v1.6.0 // indirect
 	github.com/ziutek/mymysql v1.5.4 // indirect
 	golang.org/x/crypto v0.0.0-20200604202706-70a84ac30bf9
 	golang.org/x/sys v0.0.0-20200620081246-981b61492c35 // indirect

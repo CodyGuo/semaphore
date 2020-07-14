@@ -2,9 +2,10 @@ package util
 
 import (
 	"bytes"
-	"net/smtp"
-	log "github.com/sirupsen/logrus"
 	"io"
+	"net/smtp"
+
+	log "github.com/CodyGuo/glog"
 )
 
 // SendMail dispatches a mail using smtp
@@ -14,7 +15,7 @@ func SendMail(emailHost, mailSender, mailRecipient string, mail bytes.Buffer) er
 		return err
 	}
 
-	defer func (c *smtp.Client) {
+	defer func(c *smtp.Client) {
 		err = c.Close()
 		if err != nil {
 			log.Error(err)
@@ -37,7 +38,7 @@ func SendMail(emailHost, mailSender, mailRecipient string, mail bytes.Buffer) er
 		return err
 	}
 
-	defer func (wc io.WriteCloser) {
+	defer func(wc io.WriteCloser) {
 		err = wc.Close()
 		if err != nil {
 			log.Error(err)

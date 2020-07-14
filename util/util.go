@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	log "github.com/sirupsen/logrus"
+	log "github.com/CodyGuo/glog"
 	"github.com/gorilla/mux"
 )
 

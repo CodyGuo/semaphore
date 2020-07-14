@@ -3,11 +3,12 @@ package db
 import (
 	"database/sql"
 
+	"time"
+
+	log "github.com/CodyGuo/glog"
 	"github.com/CodyGuo/semaphore/util"
 	_ "github.com/go-sql-driver/mysql" // imports mysql driver
 	"gopkg.in/gorp.v1"
-	"time"
-	log "github.com/sirupsen/logrus"
 )
 
 // Mysql is the gorp database map
@@ -23,12 +24,13 @@ const DatabaseTimeFormat = "2006-01-02T15:04:05:99Z"
 // GetParsedTime returns the timestamp as it will retrieved from the database
 // This allows us to create timestamp consistency on return values from create requests
 func GetParsedTime(t time.Time) time.Time {
-	parsedTime, err := time.Parse(DatabaseTimeFormat,t.Format(DatabaseTimeFormat))
+	parsedTime, err := time.Parse(DatabaseTimeFormat, t.Format(DatabaseTimeFormat))
 	if err != nil {
 		log.Error(err)
 	}
 	return parsedTime
 }
+
 // Connect ensures that the db is connected and mapped properly with gorp
 func Connect() error {
 	db, err := connect()

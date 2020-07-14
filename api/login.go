@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	log "github.com/sirupsen/logrus"
+	log "github.com/CodyGuo/glog"
 	"github.com/CodyGuo/semaphore/db"
 	"github.com/CodyGuo/semaphore/util"
 

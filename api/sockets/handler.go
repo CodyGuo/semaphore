@@ -5,11 +5,11 @@ import (
 	"net/http"
 	"time"
 
+	log "github.com/CodyGuo/glog"
 	"github.com/CodyGuo/semaphore/db"
+	"github.com/CodyGuo/semaphore/util"
 	"github.com/gorilla/context"
 	"github.com/gorilla/websocket"
-	"github.com/CodyGuo/semaphore/util"
-	log "github.com/sirupsen/logrus"
 )
 
 var upgrader = websocket.Upgrader{

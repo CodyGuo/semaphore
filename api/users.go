@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
+	log "github.com/CodyGuo/glog"
 	"github.com/CodyGuo/semaphore/db"
-	log "github.com/sirupsen/logrus"
 
 	"github.com/CodyGuo/semaphore/util"
 	"github.com/gorilla/context"

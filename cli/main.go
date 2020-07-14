@@ -11,13 +11,13 @@ import (
 	"strings"
 	"time"
 
+	log "github.com/CodyGuo/glog"
 	"github.com/CodyGuo/semaphore/api"
 	"github.com/CodyGuo/semaphore/api/sockets"
 	"github.com/CodyGuo/semaphore/api/tasks"
 	"github.com/CodyGuo/semaphore/db"
 	"github.com/CodyGuo/semaphore/util"
 	"github.com/gorilla/handlers"
-	log "github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
 )
 

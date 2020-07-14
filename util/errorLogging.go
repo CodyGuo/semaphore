@@ -1,41 +1,47 @@
 package util
 
 import (
-	log "github.com/sirupsen/logrus"
+	log "github.com/CodyGuo/glog"
 )
 
 // LogWarning logs a warning with arbitrary field if error
-func LogWarning(err error){
-	LogWarningWithFields(err, log.Fields{"level": "Warn"})
+func LogWarning(err error) {
+	if err != nil {
+		log.Warning(err)
+	}
 }
 
 // LogWarningWithFields logs a warning with added field context if error
-func LogWarningWithFields(err error, fields log.Fields){
+func LogWarningWithFields(err error, fileds log.Fields) {
 	if err != nil {
-		log.WithFields(fields).Warn(err.Error())
+		log.Warningf("%+v, error: %v", fileds, err)
 	}
 }
 
 // LogError logs an error with arbitrary field if error
 func LogError(err error) {
-	LogErrorWithFields(err, log.Fields{"level": "Error"})
+	if err != nil {
+		log.Error(err)
+	}
 }
 
 // LogErrorWithFields logs a error with added field context if error
-func LogErrorWithFields(err error, fields log.Fields) {
+func LogErrorWithFields(err error, fileds log.Fields) {
 	if err != nil {
-		log.WithFields(fields).Error(err.Error())
+		log.Errorf("%+v, error: %v", fileds, err)
 	}
 }
 
 // LogPanic logs and panics with arbitrary field if error
-func LogPanic(err error){
-	LogPanicWithFields(err, log.Fields{"level": "Panic"})
+func LogPanic(err error) {
+	if err != nil {
+		log.Panic(err)
+	}
 }
 
 // LogPanicWithFields logs and panics with added field context if error
-func LogPanicWithFields(err error, fields log.Fields){
+func LogPanicWithFields(err error, fields log.Fields) {
 	if err != nil {
-		log.WithFields(fields).Panic(err.Error())
+		log.Panicf("%+v, error: %v", fields, err)
 	}
 }

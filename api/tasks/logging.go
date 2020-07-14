@@ -6,10 +6,10 @@ import (
 	"os/exec"
 	"time"
 
+	log "github.com/CodyGuo/glog"
 	"github.com/CodyGuo/semaphore/api/sockets"
 	"github.com/CodyGuo/semaphore/db"
 	"github.com/CodyGuo/semaphore/util"
-	log "github.com/sirupsen/logrus"
 )
 
 func (t *task) log(msg string) {

@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"time"
 
-	log "github.com/sirupsen/logrus"
+	log "github.com/CodyGuo/glog"
 	"github.com/CodyGuo/semaphore/util"
 )
 

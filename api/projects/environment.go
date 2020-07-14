@@ -43,8 +43,8 @@ func EnvironmentMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-// GetEnvironment retrieves sorted environments from the database
-func GetEnvironment(w http.ResponseWriter, r *http.Request) {
+// GetEnvironments retrieves sorted environments from the database
+func GetEnvironments(w http.ResponseWriter, r *http.Request) {
 	project := context.Get(r, "project").(db.Project)
 	var env []db.Environment
 
@@ -76,6 +76,10 @@ func GetEnvironment(w http.ResponseWriter, r *http.Request) {
 	}
 
 	util.WriteJSON(w, http.StatusOK, env)
+}
+
+func GetEnvironment(w http.ResponseWriter, r *http.Request) {
+	util.WriteJSON(w, http.StatusOK, context.Get(r, "environment"))
 }
 
 // UpdateEnvironment updates an existing environment in the database

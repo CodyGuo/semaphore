@@ -131,6 +131,10 @@ func AddTemplate(w http.ResponseWriter, r *http.Request) {
 	util.WriteJSON(w, http.StatusCreated, tpl)
 }
 
+func GetTemplate(w http.ResponseWriter, r *http.Request) {
+	util.WriteJSON(w, http.StatusOK, context.Get(r, "template"))
+}
+
 // UpdateTemplate writes a template to an existing key in the database
 func UpdateTemplate(w http.ResponseWriter, r *http.Request) {
 	oldTpl := context.Get(r, "template").(db.Template)

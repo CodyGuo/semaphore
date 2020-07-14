@@ -116,7 +116,7 @@ func Route() *mux.Router {
 	apiProject.HandleFunc("/tasks", tasks.GetAllTasks).Methods("GET", "HEAD")
 	apiProject.HandleFunc("/templates", projects.GetTemplates).Methods("GET", "HEAD")
 	apiProject.HandleFunc("/inventory", projects.GetInventory).Methods("GET", "HEAD")
-	apiProject.HandleFunc("/environment", projects.GetEnvironment).Methods("GET", "HEAD")
+	apiProject.HandleFunc("/environment", projects.GetEnvironments).Methods("GET", "HEAD")
 	apiProject.HandleFunc("/keys", projects.GetKeys).Methods("GET", "HEAD")
 	apiProject.HandleFunc("/repositories", projects.GetRepositories).Methods("GET", "HEAD")
 	apiProject.HandleFunc("/users", projects.GetUsers).Methods("GET", "HEAD")
@@ -129,6 +129,10 @@ func Route() *mux.Router {
 	templates := apiProject.PathPrefix("/templates").Subrouter()
 	templates.Use(projects.MustBeAdmin)
 	templates.HandleFunc("", projects.AddTemplate).Methods("POST")
+
+	templatesInfo := apiProject.PathPrefix("/templates/{template_id}").Subrouter()
+	templatesInfo.Use(projects.TemplatesMiddleware)
+	templatesInfo.HandleFunc("", projects.GetTemplate).Methods("GET")
 
 	templatesManagement := templates.PathPrefix("/{template_id}").Subrouter()
 	templatesManagement.Use(projects.TemplatesMiddleware)
@@ -157,6 +161,10 @@ func Route() *mux.Router {
 	environment := apiProject.PathPrefix("/environment").Subrouter()
 	environment.Use(projects.MustBeAdmin)
 	environment.HandleFunc("", projects.AddEnvironment).Methods("POST")
+
+	environmentInfo := apiProject.PathPrefix("/environments/{environment_id}").Subrouter()
+	environmentInfo.Use(projects.EnvironmentMiddleware)
+	environmentInfo.HandleFunc("", projects.GetEnvironment).Methods("GET")
 
 	environmentManager := environment.PathPrefix("/{environment_id}").Subrouter()
 	environmentManager.Use(projects.EnvironmentMiddleware)

@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"io"
 	"net/smtp"
-
-	log "github.com/CodyGuo/glog"
 )
 
 // SendMail dispatches a mail using smtp
